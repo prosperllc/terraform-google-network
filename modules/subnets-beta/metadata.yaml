@@ -23,7 +23,7 @@ spec:
   source:
     repo: https://github.com/terraform-google-modules/terraform-google-network
     sourceType: git
-  version: 6.0.0
+  version: 9.1.0
   actuationTool:
     type: Terraform
     version: '>= 0.13.0'
@@ -93,7 +93,7 @@ spec:
     required: false
   - name: subnets
     description: The list of subnets being created
-    type: list(map(string))
+    type: list(object({subnet_name = string, subnet_ip = string, subnet_region = string, subnet_private_access = optional(string), subnet_private_ipv6_access = optional(string), subnet_flow_logs = optional(string), subnet_flow_logs_interval = optional(string), subnet_flow_logs_sampling = optional(string), subnet_flow_logs_metadata = optional(string), subnet_flow_logs_filter = optional(string), subnet_flow_logs_metadata_fields = optional(list(string)), description = optional(string)}))
     required: true
   outputs:
   - name: subnets

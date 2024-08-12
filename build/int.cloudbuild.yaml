@@ -166,9 +166,69 @@ steps:
     - verify private-service-connect
   name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
   args: ['/bin/bash', '-c', 'cft test run TestPrivateServiceConnect --stage teardown --verbose']
+- id: converge global-firewall-policy
+  waitFor:
+    - destroy private-service-connect
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGlobalNetworkFirewallPolicy --stage apply --verbose']
+- id: verify global-firewall-policy
+  waitFor:
+    - converge global-firewall-policy
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGlobalNetworkFirewallPolicy --stage verify --verbose']
+- id: destroy global-firewall-policy
+  waitFor:
+    - verify global-firewall-policy
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestGlobalNetworkFirewallPolicy --stage teardown --verbose']
+- id: converge regional-firewall-policy
+  waitFor:
+    - destroy global-firewall-policy
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestRegionalNetworkFirewallPolicy --stage apply --verbose']
+- id: verify regional-firewall-policy
+  waitFor:
+    - converge regional-firewall-policy
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestRegionalNetworkFirewallPolicy --stage verify --verbose']
+- id: destroy regional-firewall-policy
+  waitFor:
+    - verify regional-firewall-policy
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestRegionalNetworkFirewallPolicy --stage teardown --verbose']
+- id: converge firewall-rule
+  waitFor:
+    - destroy regional-firewall-policy
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/bidirectional-firewall-rules --stage apply --verbose']
+- id: verify firewall-rule
+  waitFor:
+    - converge firewall-rule
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/bidirectional-firewall-rules --stage verify --verbose']
+- id: destroy firewall-rule
+  waitFor:
+    - verify firewall-rule
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestAll/examples/bidirectional-firewall-rules --stage teardown --verbose']
+- id: converge hierarchical-firewall-policy
+  waitFor:
+    - destroy firewall-rule
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestHierarchicalFirewallPolicy --stage apply --verbose']
+- id: verify hierarchical-firewall-policy
+  waitFor:
+    - converge hierarchical-firewall-policy
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestHierarchicalFirewallPolicy --stage verify --verbose']
+- id: destroy hierarchical-firewall-policy
+  waitFor:
+    - verify hierarchical-firewall-policy
+  name: 'gcr.io/cloud-foundation-cicd/$_DOCKER_IMAGE_DEVELOPER_TOOLS:$_DOCKER_TAG_VERSION_DEVELOPER_TOOLS'
+  args: ['/bin/bash', '-c', 'cft test run TestHierarchicalFirewallPolicy --stage teardown --verbose']
 tags:
 - 'ci'
 - 'integration'
 substitutions:
   _DOCKER_IMAGE_DEVELOPER_TOOLS: 'cft/developer-tools'
-  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.12'
+  _DOCKER_TAG_VERSION_DEVELOPER_TOOLS: '1.22'

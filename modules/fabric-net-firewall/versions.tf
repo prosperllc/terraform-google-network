@@ -15,16 +15,15 @@
  */
 
 terraform {
-  required_version = ">= 0.13.0"
-
+  required_version = ">= 1.3"
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "<5.0,>= 2.12"
+      version = ">= 2.12, < 6"
     }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-network:fabric-net-firewall/v7.0.0"
+    module_name = "blueprints/terraform/terraform-google-network:fabric-net-firewall/v9.1.0"
   }
 }

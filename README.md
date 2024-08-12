@@ -7,25 +7,32 @@ It supports creating:
 - A Google Virtual Private Network (VPC)
 - Subnets within the VPC
 - Secondary ranges for the subnets (if applicable)
+- routes
+- firewall rules
 
-Sub modules are provided for creating individual vpc, subnets, and routes. See the modules directory for the various sub modules usage.
+[Sub modules](./modules/) are provided for creating individual vpc, subnets, routes, firewall rules, and firewall policies. See the [modules](./modules/) directory for the various sub modules usage.
+- [vpc](./modules/vpc/)
+- [subnet](./modules/subnets/)
+- [route](./modules/routes/)
+- [firewall rules](./modules/firewall-rules/)
+- [hierarchical firewall policy](./modules/hierarchical-firewall-policy/)
+- [network firewall policy](./modules/network-firewall-policy/)
+- [serverless vpc  access connector](./modules/vpc-serverless-connector-beta/)
+- [hierarchical firewall policy](./modules/hierarchical-firewall-policy/)
 
 ## Compatibility
 
 This module is meant for use with Terraform 1.3+ and tested using Terraform 1.4+.
 If you find incompatibilities using Terraform `>=1.3`, please open an issue.
 
-If you haven't [upgraded][terraform-0.13-upgrade] and need a Terraform
-0.12.x-compatible version of this module, the last released version
-intended for Terraform 0.12.x is [2.6.0].
 
 ## Usage
-You can go to the examples folder, however the usage of the module could be like this in your own main.tf file:
+You can go to the [examples](./examples/) folder, however the usage of the module could be like this in your own main.tf file:
 
 ```hcl
 module "vpc" {
     source  = "terraform-google-modules/network/google"
-    version = "~> 7.0"
+    version = "~> 9.1"
 
     project_id   = "<PROJECT ID>"
     network_name = "example-vpc"
@@ -102,15 +109,20 @@ Then perform the following commands on the root folder:
 | auto\_create\_subnetworks | When set to true, the network is created in 'auto subnet mode' and it will create a subnet for each region automatically across the 10.128.0.0/9 address range. When set to false, the network is created in 'custom subnet mode' so the user can explicitly connect subnetwork resources. | `bool` | `false` | no |
 | delete\_default\_internet\_gateway\_routes | If set, ensure that all routes within the network specified whose names begin with 'default-route' and with a next hop of 'default-internet-gateway' are deleted | `bool` | `false` | no |
 | description | An optional description of this resource. The resource must be recreated to modify this field. | `string` | `""` | no |
-| firewall\_rules | List of firewall rules | `any` | `[]` | no |
+| egress\_rules | List of egress rules. This will be ignored if variable 'rules' is non-empty | <pre>list(object({<br>    name                    = string<br>    description             = optional(string, null)<br>    disabled                = optional(bool, null)<br>    priority                = optional(number, null)<br>    destination_ranges      = optional(list(string), [])<br>    source_ranges           = optional(list(string), [])<br>    source_tags             = optional(list(string))<br>    source_service_accounts = optional(list(string))<br>    target_tags             = optional(list(string))<br>    target_service_accounts = optional(list(string))<br><br>    allow = optional(list(object({<br>      protocol = string<br>      ports    = optional(list(string))<br>    })), [])<br>    deny = optional(list(object({<br>      protocol = string<br>      ports    = optional(list(string))<br>    })), [])<br>    log_config = optional(object({<br>      metadata = string<br>    }))<br>  }))</pre> | `[]` | no |
+| enable\_ipv6\_ula | Enabled IPv6 ULA, this is a permenant change and cannot be undone! (default 'false') | `bool` | `false` | no |
+| firewall\_rules | This is DEPRICATED and available for backward compatiblity. Use ingress\_rules and egress\_rules variables. List of firewall rules | <pre>list(object({<br>    name                    = string<br>    description             = optional(string, null)<br>    direction               = optional(string, "INGRESS")<br>    disabled                = optional(bool, null)<br>    priority                = optional(number, null)<br>    ranges                  = optional(list(string), [])<br>    source_tags             = optional(list(string))<br>    source_service_accounts = optional(list(string))<br>    target_tags             = optional(list(string))<br>    target_service_accounts = optional(list(string))<br><br>    allow = optional(list(object({<br>      protocol = string<br>      ports    = optional(list(string))<br>    })), [])<br>    deny = optional(list(object({<br>      protocol = string<br>      ports    = optional(list(string))<br>    })), [])<br>    log_config = optional(object({<br>      metadata = string<br>    }))<br>  }))</pre> | `[]` | no |
+| ingress\_rules | List of ingress rules. This will be ignored if variable 'rules' is non-empty | <pre>list(object({<br>    name                    = string<br>    description             = optional(string, null)<br>    disabled                = optional(bool, null)<br>    priority                = optional(number, null)<br>    destination_ranges      = optional(list(string), [])<br>    source_ranges           = optional(list(string), [])<br>    source_tags             = optional(list(string))<br>    source_service_accounts = optional(list(string))<br>    target_tags             = optional(list(string))<br>    target_service_accounts = optional(list(string))<br><br>    allow = optional(list(object({<br>      protocol = string<br>      ports    = optional(list(string))<br>    })), [])<br>    deny = optional(list(object({<br>      protocol = string<br>      ports    = optional(list(string))<br>    })), [])<br>    log_config = optional(object({<br>      metadata = string<br>    }))<br>  }))</pre> | `[]` | no |
+| internal\_ipv6\_range | When enabling IPv6 ULA, optionally, specify a /48 from fd20::/20 (default null) | `string` | `null` | no |
 | mtu | The network MTU (If set to 0, meaning MTU is unset - defaults to '1460'). Recommended values: 1460 (default for historic reasons), 1500 (Internet default), or 8896 (for Jumbo packets). Allowed are all values in the range 1300 to 8896, inclusively. | `number` | `0` | no |
+| network\_firewall\_policy\_enforcement\_order | Set the order that Firewall Rules and Firewall Policies are evaluated. Valid values are `BEFORE_CLASSIC_FIREWALL` and `AFTER_CLASSIC_FIREWALL`. (default null or equivalent to `AFTER_CLASSIC_FIREWALL`) | `string` | `null` | no |
 | network\_name | The name of the network being created | `string` | n/a | yes |
 | project\_id | The ID of the project where this VPC will be created | `string` | n/a | yes |
 | routes | List of routes being created in this VPC | `list(map(string))` | `[]` | no |
 | routing\_mode | The network routing mode (default 'GLOBAL') | `string` | `"GLOBAL"` | no |
 | secondary\_ranges | Secondary ranges that will be used in some of the subnets | `map(list(object({ range_name = string, ip_cidr_range = string })))` | `{}` | no |
 | shared\_vpc\_host | Makes this project a Shared VPC host if 'true' (default 'false') | `bool` | `false` | no |
-| subnets | The list of subnets being created | `list(map(string))` | n/a | yes |
+| subnets | The list of subnets being created | <pre>list(object({<br>    subnet_name                      = string<br>    subnet_ip                        = string<br>    subnet_region                    = string<br>    subnet_private_access            = optional(string)<br>    subnet_private_ipv6_access       = optional(string)<br>    subnet_flow_logs                 = optional(string)<br>    subnet_flow_logs_interval        = optional(string)<br>    subnet_flow_logs_sampling        = optional(string)<br>    subnet_flow_logs_metadata        = optional(string)<br>    subnet_flow_logs_filter          = optional(string)<br>    subnet_flow_logs_metadata_fields = optional(list(string))<br>    description                      = optional(string)<br>    purpose                          = optional(string)<br>    role                             = optional(string)<br>    stack_type                       = optional(string)<br>    ipv6_access_type                 = optional(string)<br>  }))</pre> | n/a | yes |
 
 ## Outputs
 
@@ -138,13 +150,25 @@ Then perform the following commands on the root folder:
 
 The subnets list contains maps, where each object represents a subnet. Each map has the following inputs (please see examples folder for additional references):
 
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| subnet\_name | The name of the subnet being created  | string | - | yes |
-| subnet\_ip | The IP and CIDR range of the subnet being created | string | - | yes |
-| subnet\_region | The region where the subnet will be created  | string | - | yes |
-| subnet\_private\_access | Whether this subnet will have private Google access enabled | string | `"false"` | no |
-| subnet\_flow\_logs  | Whether the subnet will record and send flow log data to logging | string | `"false"` | no |
+| Name                         | Description                                                                                                     |  Type  |         Default          | Required |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------- | :----: | :----------------------: | :------: |
+| subnet\_name                 | The name of the subnet being created                                                                            | string |            -             |   yes    |
+| subnet\_ip                   | The IP and CIDR range of the subnet being created                                                               | string |            -             |   yes    |
+| subnet\_region               | The region where the subnet will be created                                                                     | string |            -             |   yes    |
+| subnet\_private\_access      | Whether this subnet will have private Google access enabled                                                     | string |        `"false"`         |    no    |
+| subnet\_private\_ipv6\_access| The private IPv6 google access type for the VMs in this subnet                                                  | string |            -             |    no    |
+| subnet\_flow\_logs           | Whether the subnet will record and send flow log data to logging                                                | string |        `"false"`         |    no    |
+| subnet\_flow\_logs\_interval | If subnet\_flow\_logs is true, sets the aggregation interval for collecting flow logs                           | string |    `"INTERVAL_5_SEC"`    |    no    |
+| subnet\_flow\_logs\_sampling | If subnet\_flow\_logs is true, set the sampling rate of VPC flow logs within the subnetwork                     | string |         `"0.5"`          |    no    |
+| subnet\_flow\_logs\_metadata | If subnet\_flow\_logs is true, configures whether metadata fields should be added to the reported VPC flow logs | string | `"INCLUDE_ALL_METADATA"` |    no    |
+| subnet\_flow\_logs\_filter | Export filter defining which VPC flow logs should be logged, see https://cloud.google.com/vpc/docs/flow-logs#filtering for formatting details  | string | `"true"` |    no    |
+| subnet\_flow\_logs\_metadata\_fields | List of metadata fields that should be added to reported logs. Can only be specified if VPC flow logs for this subnetwork is enabled and "metadata" is set to CUSTOM_METADATA.  | any | - |    no    |
+| description                         | An optional description of this resource. Provide this property when you create the resource. This field can be set only at resource creation time  | string | - |    no    |
+| purpose | The purpose of the subnet usage. Whether it is to be used as a regular subnet or for proxy or loadbalacing purposes, see https://cloud.google.com/vpc/docs/subnets#purpose for more details  | string | `"PRIVATE"` |    no    |
+| role                         | The role of the subnet when using it as a proxy or loadbalancer network. Whether it is to be used as the active or as a backup subnet, see https://cloud.google.com/load-balancing/docs/proxy-only-subnets#proxy_only_subnet_create for more details  | string |            -             |    no    |
+| stack\_type                  | `IPV4_ONLY` or `IPV4_IPV6` for dual-stack networking | string | - | no |
+| ipv6\_access\_type           | `INTERNAL` or `EXTERNAL`. `INTERNAL` requires ULA be enabled on the VPC | string | - | no |
+
 
 ### Route Inputs
 

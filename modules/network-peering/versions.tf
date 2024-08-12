@@ -20,23 +20,23 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "<5.0,>= 2.12"
+      version = ">= 4.65, < 6"
     }
     google-beta = {
       source  = "hashicorp/google-beta"
-      version = "<5.0,>= 2.12"
+      version = ">= 4.65, < 6"
     }
     random = {
       source  = "hashicorp/random"
-      version = "~> 3.4"
+      version = ">= 3.4"
     }
     null = {
       source  = "hashicorp/null"
-      version = "~> 3.2"
+      version = ">= 3.2"
     }
   }
 
   provider_meta "google" {
-    module_name = "blueprints/terraform/terraform-google-network:network-peering/v7.0.0"
+    module_name = "blueprints/terraform/terraform-google-network:network-peering/v9.1.0"
   }
 }

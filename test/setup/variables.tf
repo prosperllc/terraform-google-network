@@ -19,6 +19,7 @@ variable "org_id" {
 
 variable "folder_id" {
   description = "The folder to deploy in"
+  default     = null
 }
 
 variable "billing_account" {

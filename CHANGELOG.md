@@ -2,6 +2,106 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [9.1.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v9.0.0...v9.1.0) (2024-04-15)
+
+
+### Features
+
+* add hierarchical firewall policy sub-module ([#553](https://github.com/terraform-google-modules/terraform-google-network/issues/553)) ([c7c0f07](https://github.com/terraform-google-modules/terraform-google-network/commit/c7c0f078ff31227696bda5f186d681bb48751e24))
+* Add service_directory_registrations: namespace and service_directory_region ([#548](https://github.com/terraform-google-modules/terraform-google-network/issues/548)) ([d4855d6](https://github.com/terraform-google-modules/terraform-google-network/commit/d4855d6b82b7963e22ed0f05aa31900915cfb954))
+
+## [9.0.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v8.1.0...v9.0.0) (2024-01-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* Add dynamic block to define secondary subnets ([#523](https://github.com/terraform-google-modules/terraform-google-network/issues/523))
+
+### Features
+
+* Add dynamic block to define secondary subnets ([#523](https://github.com/terraform-google-modules/terraform-google-network/issues/523)) ([2adc566](https://github.com/terraform-google-modules/terraform-google-network/commit/2adc566aa37d564e9b87b3183cb8195b5fa11958))
+
+
+### Bug Fixes
+
+* src_threat_intelligences is missing from the variable object definition. ([#530](https://github.com/terraform-google-modules/terraform-google-network/issues/530)) ([654c366](https://github.com/terraform-google-modules/terraform-google-network/commit/654c366349b29b3a78a95fab42bc8cd387d0a7ce))
+
+## [8.1.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v8.0.0...v8.1.0) (2023-12-04)
+
+
+### Features
+
+* Add in disabled field to firewall-rules ([#524](https://github.com/terraform-google-modules/terraform-google-network/issues/524)) ([f851f06](https://github.com/terraform-google-modules/terraform-google-network/commit/f851f06cf5b8a1a5400a51a0bdd659a35395b057))
+
+## [8.0.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v7.5.0...v8.0.0) (2023-11-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* bumping tf to v1.3 for fabric-net-firewall ([#515](https://github.com/terraform-google-modules/terraform-google-network/issues/515))
+* **deps:** Update Terraform terraform-google-modules/cloud-dns/google to v5 ([#489](https://github.com/terraform-google-modules/terraform-google-network/issues/489))
+
+### Bug Fixes
+
+* bumping tf to v1.3 for fabric-net-firewall ([#515](https://github.com/terraform-google-modules/terraform-google-network/issues/515)) ([c08ea5f](https://github.com/terraform-google-modules/terraform-google-network/commit/c08ea5f269cc845db7c335b30b45c6d5d728029b))
+* **deps:** Update Terraform terraform-google-modules/cloud-dns/google to v5 ([#489](https://github.com/terraform-google-modules/terraform-google-network/issues/489)) ([adb3e2a](https://github.com/terraform-google-modules/terraform-google-network/commit/adb3e2adb92dfbcd9792cd1db7df1b048ee7d7cb))
+* network-firewall-policy not able to use target_secure_tags ([#514](https://github.com/terraform-google-modules/terraform-google-network/issues/514)) ([a5418b4](https://github.com/terraform-google-modules/terraform-google-network/commit/a5418b40729e6f72b3f3e0c76825381f7aa68d9d))
+
+## [7.5.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v7.4.0...v7.5.0) (2023-10-18)
+
+
+### Features
+
+* add stack type to peering module ([#500](https://github.com/terraform-google-modules/terraform-google-network/issues/500)) ([bc711d2](https://github.com/terraform-google-modules/terraform-google-network/commit/bc711d29657953cf596a2dec458702b5b3ac0f1f))
+
+
+### Bug Fixes
+
+* upgraded versions.tf to include minor bumps from tpg v5 ([#503](https://github.com/terraform-google-modules/terraform-google-network/issues/503)) ([4ef6a9b](https://github.com/terraform-google-modules/terraform-google-network/commit/4ef6a9b9d33a3904ff8271164dad8ce4932e5f74))
+
+## [7.4.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v7.3.0...v7.4.0) (2023-10-02)
+
+
+### Features
+
+* add firewall policy enforcement order ([#486](https://github.com/terraform-google-modules/terraform-google-network/issues/486)) ([a65c41a](https://github.com/terraform-google-modules/terraform-google-network/commit/a65c41a8afede4a6cc64d5090c91a6cb25a23f87))
+
+
+### Bug Fixes
+
+* Adds pass-through variables for ipv6 ([#495](https://github.com/terraform-google-modules/terraform-google-network/issues/495)) ([d477082](https://github.com/terraform-google-modules/terraform-google-network/commit/d477082964d8f798c75bfb39d1a7d7ca11820360))
+* restrict provider version to "&lt;5.0" for modules missing max version ([#501](https://github.com/terraform-google-modules/terraform-google-network/issues/501)) ([22736f5](https://github.com/terraform-google-modules/terraform-google-network/commit/22736f50e0ff0edbab3cb6300087f5813fa209ee))
+* update simple IPv6 subnet example ([#498](https://github.com/terraform-google-modules/terraform-google-network/issues/498)) ([7fdd9ab](https://github.com/terraform-google-modules/terraform-google-network/commit/7fdd9abb06e1a523cf91eaa82e06a5abff15b1a5))
+
+## [7.3.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v7.2.0...v7.3.0) (2023-08-09)
+
+
+### Features
+
+* add ingress and egress firewall rules to main module ([#485](https://github.com/terraform-google-modules/terraform-google-network/issues/485)) ([663f1d8](https://github.com/terraform-google-modules/terraform-google-network/commit/663f1d892ce4dd74b46b7a69767eb29731882e0d))
+
+
+### Bug Fixes
+
+* added missing variables ([#481](https://github.com/terraform-google-modules/terraform-google-network/issues/481)) ([71a1177](https://github.com/terraform-google-modules/terraform-google-network/commit/71a11777cb5c432459ae0cdca2bc625c5c513651))
+* network attachment error in firewall policy sub-module ([#478](https://github.com/terraform-google-modules/terraform-google-network/issues/478)) ([2dde9d8](https://github.com/terraform-google-modules/terraform-google-network/commit/2dde9d83cba253148a37621cfbe69d2a1f2b9a14))
+
+## [7.2.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v7.1.0...v7.2.0) (2023-07-25)
+
+
+### Features
+
+* Add IPv6 ULA support and document subnet ipv6 support ([#466](https://github.com/terraform-google-modules/terraform-google-network/issues/466)) ([eb9d9fb](https://github.com/terraform-google-modules/terraform-google-network/commit/eb9d9fba67777ae3f0f20ac425789bc6489634c6))
+* add metadata_fields support ([#467](https://github.com/terraform-google-modules/terraform-google-network/issues/467)) ([f311cba](https://github.com/terraform-google-modules/terraform-google-network/commit/f311cba5b0689c84882ac7ae225b15e612371c6c))
+
+## [7.1.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v7.0.0...v7.1.0) (2023-06-27)
+
+
+### Features
+
+* add destination_ranges and source_ranges in firewall rules ([#464](https://github.com/terraform-google-modules/terraform-google-network/issues/464)) ([83a7e85](https://github.com/terraform-google-modules/terraform-google-network/commit/83a7e85ec0085309d41e103d959eecf17c7a6b14))
+* added network firewall policy sub-module ([#453](https://github.com/terraform-google-modules/terraform-google-network/issues/453)) ([7b197c6](https://github.com/terraform-google-modules/terraform-google-network/commit/7b197c6448c13bb5664f7865d42890b8d2fba7e1))
+
 ## [7.0.0](https://github.com/terraform-google-modules/terraform-google-network/compare/v6.0.1...v7.0.0) (2023-04-13)
 
 
